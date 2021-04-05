@@ -2,6 +2,8 @@
 
 Yet another Git development platform. Forked from GitLab CE.
 
+**THIS PROJECT IS NOT YET READY!!! I needed to add something so GH would stop bugging me.** 
+
 ## Open source software to collaborate on code
 
 - Manage Git repositories with fine grained access controls that keep your code secure
