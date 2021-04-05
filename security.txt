@@ -1,0 +1,6 @@
+Contact: security@themintfarm.ml
+Acknowledgments: https://glimmer.themintfarm.ml/security/vulnerability-acknowledgements/
+Preferred-Languages: en
+Canonical: https://glimmer.themintfarm.ml/security/disclosure/
+Policy: https://hackerone.com/glimmer
+Hiring: https://glimmer.themintfarm.ml/jobs/

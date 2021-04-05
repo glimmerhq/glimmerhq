@@ -1,0 +1,85 @@
+.row.gl-mt-3.gl-mb-3.triggers-container
+  .col-lg-12
+    .card
+      .card-header
+        = s_("Manage your project's triggers")
+      .card-body
+        = render "projects/triggers/form", btn_text: "Add trigger"
+        %hr
+        - if Feature.enabled?(:ci_pipeline_triggers_settings_vue_ui, @project)
+          #js-ci-pipeline-triggers-list.triggers-list{ data: { triggers: @triggers_json } }
+        - else
+          - if @triggers.any?
+            .table-responsive.triggers-list
+              %table.table
+                %thead
+                  %th
+                    %strong
+                    = s_("Token")
+                  %th
+                    %strong
+                    = s_("Description")
+                  %th
+                    %strong
+                    = s_("Owner")
+                  %th
+                    %strong
+                    = s_("Last used")
+                  %th
+                = render partial: 'projects/triggers/trigger', collection: @triggers, as: :trigger
+          - else
+            %p.settings-message.text-center.gl-mb-3{ data: { testid: 'no_triggers_content' } }
+              = s_("No triggers exist yet. Use the form above to create one.")
+
+      .card-footer
+
+        %p
+          = s_("These examples show how to trigger this project's pipeline for a branch or tag.")
+
+        %p.light
+          = s_("Triggers|In each example, replace %{code_start}TOKEN%{code_end} with the trigger token you generated and replace %{code_start}REF_NAME%{code_end} with the branch or tag name.").html_safe % { code_start: "<code>".html_safe, code_end: "</code>".html_safe }
+
+        %h5.gl-mt-3
+          = s_("Use cURL")
+
+        %pre
+          :plain
+            curl -X POST \
+                 -F token=TOKEN \
+                 -F ref=REF_NAME \
+                 #{builds_trigger_url(@project.id)}
+        %h5.gl-mt-3
+          = s_("Use .gitlab-ci.yml")
+
+        %pre
+          :plain
+            script:
+              - "curl -X POST -F token=TOKEN -F ref=REF_NAME #{builds_trigger_url(@project.id)}"
+        %h5.gl-mt-3
+          = s_("Use webhook")
+
+        %pre
+          :plain
+            #{builds_trigger_url(@project.id, ref: 'REF_NAME')}?token=TOKEN
+        %h5.gl-mt-3
+          = s_("Pass job variables")
+
+        %p.light
+          = s_("Triggers|To pass variables to the triggered pipeline, add %{code_start}variables[VARIABLE]=VALUE%{code_end} to the API request.").html_safe % { code_start: "<code>".html_safe, code_end: "</code>".html_safe }
+
+        %p.light
+          = s_("cURL:")
+
+        %pre
+          :plain
+            curl -X POST \
+                 -F token=TOKEN \
+                 -F "ref=REF_NAME" \
+                 -F "variables[RUN_NIGHTLY_BUILD]=true" \
+                 #{builds_trigger_url(@project.id)}
+        %p.light
+          = s_("Webhook:")
+
+        %pre.gl-mb-0
+          :plain
+            #{builds_trigger_url(@project.id, ref: 'REF_NAME')}?token=TOKEN&variables[RUN_NIGHTLY_BUILD]=true

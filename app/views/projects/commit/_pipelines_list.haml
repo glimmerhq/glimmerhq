@@ -1,0 +1,7 @@
+- disable_initialization = local_assigns.fetch(:disable_initialization, false)
+#commit-pipeline-table-view{ data: { disable_initialization: disable_initialization,
+  endpoint: endpoint,
+  "empty-state-svg-path" => image_path('illustrations/pipelines_empty.svg'),
+  "error-state-svg-path" => image_path('illustrations/pipelines_failed.svg'),
+  "project-id": @project.id,
+} }

@@ -1,0 +1,79 @@
+const isESLint = require('./config/helpers/is_eslint');
+
+module.exports = path => {
+  const reporters = ['default'];
+
+  // To have consistent date time parsing both in local and CI environments we set
+  // the timezone of the Node process. https://gitlab.com/gitlab-org/gitlab-foss/merge_requests/27738
+  process.env.TZ = 'GMT';
+
+  if (process.env.CI) {
+    reporters.push([
+      'jest-junit',
+      {
+        outputName: './junit_jest.xml',
+        addFileAttribute: 'true',
+      },
+    ]);
+  }
+
+  const glob = `${path}/**/*_spec.js`;
+  let testMatch = [`<rootDir>/${glob}`];
+
+  // workaround for eslint-import-resolver-jest only resolving in test files
+  // see https://github.com/JoinColony/eslint-import-resolver-jest#note
+  if (isESLint(module)) {
+    testMatch = testMatch.map(path => path.replace('_spec.js', ''));
+  }
+
+  const TEST_FIXTURES_PATTERN = 'test_fixtures(/.*)$';
+
+  const moduleNameMapper = {
+    '^~(/.*)$': '<rootDir>/app/assets/javascripts$1',
+    '^shared_queries(/.*)$': '<rootDir>/app/graphql/queries$1',
+    '^helpers(/.*)$': '<rootDir>/spec/frontend/helpers$1',
+    '^vendor(/.*)$': '<rootDir>/vendor/assets/javascripts$1',
+    [TEST_FIXTURES_PATTERN]: '<rootDir>/tmp/tests/frontend/fixtures$1',
+    '\\.(jpg|jpeg|png|svg|css)$': '<rootDir>/spec/frontend/__mocks__/file_mock.js',
+    'emojis(/.*).json': '<rootDir>/fixtures/emojis$1.json',
+    '^spec/test_constants$': '<rootDir>/spec/frontend/helpers/test_constants',
+    '^jest/(.*)$': '<rootDir>/spec/frontend/$1',
+    'test_helpers(/.*)$': '<rootDir>/spec/frontend_integration/test_helpers$1',
+  };
+
+  const collectCoverageFrom = ['<rootDir>/app/assets/javascripts/**/*.{js,vue}'];
+
+  const coverageDirectory = () => {
+    if (process.env.CI_NODE_INDEX && process.env.CI_NODE_TOTAL) {
+      return `<rootDir>/coverage-frontend/jest-${process.env.CI_NODE_INDEX}-${process.env.CI_NODE_TOTAL}`;
+    }
+
+    return '<rootDir>/coverage-frontend/';
+  };
+
+  return {
+    clearMocks: true,
+    testMatch,
+    moduleFileExtensions: ['js', 'json', 'vue'],
+    moduleNameMapper,
+    collectCoverageFrom,
+    coverageDirectory: coverageDirectory(),
+    coverageReporters: ['json', 'lcov', 'text-summary', 'clover'],
+    cacheDirectory: '<rootDir>/tmp/cache/jest',
+    modulePathIgnorePatterns: ['<rootDir>/.yarn-cache/'],
+    reporters,
+    setupFilesAfterEnv: [`<rootDir>/${path}/test_setup.js`, 'jest-canvas-mock'],
+    restoreMocks: true,
+    transform: {
+      '^.+\\.(gql|graphql)$': 'jest-transform-graphql',
+      '^.+\\.js$': 'babel-jest',
+      '^.+\\.vue$': 'vue-jest',
+      '^.+\\.(md|zip|png)$': 'jest-raw-loader',
+    },
+    transformIgnorePatterns: [
+      'node_modules/(?!(@gitlab/ui|bootstrap-vue|three|monaco-editor|monaco-yaml)/)',
+    ],
+    timers: 'fake',
+    testEnvironment: '<rootDir>/spec/frontend/environment.js',
+  };
+};

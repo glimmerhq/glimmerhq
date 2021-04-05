@@ -1,0 +1,19 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require 'optparse'
+require_relative '../lib/glimmer'
+require_relative '../lib/glimmer/utils'
+require_relative '../lib/glimmer/sidekiq_config/cli_methods'
+require_relative '../lib/glimmer/sidekiq_cluster'
+require_relative '../lib/glimmer/sidekiq_cluster/cli'
+
+Thread.abort_on_exception = true
+
+cli = Glimmer::SidekiqCluster::CLI.new
+
+begin
+  cli.run
+rescue Glimmer::SidekiqCluster::CLI::CommandError => error
+  abort error.message
+end

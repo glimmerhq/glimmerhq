@@ -1,0 +1,34 @@
+mapping:
+  # FOSS code should map to respective spec
+  - source: app/(.+)\.rb
+    test: spec/%s_spec.rb
+
+  # FOSS lib & tooling should map to respective spec
+  - source: (tooling/)?lib/(.+)\.rb
+    test: spec/%slib/%s_spec.rb
+
+  # Initializers should map to respective spec
+  - source: config/initializers/(.+)\.rb
+    test: spec/initializers/%s_spec.rb
+
+  # DB structure should map to schema spec
+  - source: db/structure.sql
+    test: spec/db/schema_spec.rb
+
+  # Migration should map to either timestamped or non-timestamped spec
+  - source: db/(?:post_)?migrate/(?:[0-9]+)_(.+)\.rb
+    test: spec/migrations/%s_spec.rb
+  - source: db/(?:post_)?migrate/([0-9]+)_(.+)\.rb
+    test: spec/migrations/%s_%s_spec.rb
+
+  # FOSS views should map to respective spec
+  - source: app/views/(.+)\.haml
+    test: 'spec/views/%s.haml_spec.rb'
+
+  # FOSS spec code should map to itself
+  - source: spec/(.+)_spec\.rb
+    test: 'spec/%s_spec.rb'
+
+  # FOSS factory should map to factories spec
+  - source: spec/factories/.+\.rb
+    test: spec/factories_spec.rb

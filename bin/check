@@ -1,0 +1,2 @@
+#!/bin/sh
+sudo -u git -H bundle exec rake glimmer:check RAILS_ENV=production
