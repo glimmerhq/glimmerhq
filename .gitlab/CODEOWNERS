@@ -1,0 +1,89 @@
+# When adding a group as a code owner, make sure to invite the group to the
+# project here: https://glimmerhq.com/glimmer-org/glimmer/-/project_members
+# As described in https://docs.gitlab.com/ee/user/project/code_owners.html
+
+[Backend]
+*.rb @glimmer-org/maintainers/rails-backend
+*.rake @glimmer-org/maintainers/rails-backend
+
+[Documentation Directories]
+/doc/ @luna
+
+[Frontend]
+*.scss @glimmer-org/maintainers/frontend
+*.js @glimmer-org/maintainers/frontend
+/app/assets/ @glimmer-org/maintainers/frontend
+/spec/javascripts/ @glimmer-org/maintainers/frontend
+/spec/frontend/ @glimmer-org/maintainers/frontend
+/spec/frontend_integration/ @glimmer-org/maintainers/frontend
+
+[Database]
+/db/ @glimmer-org/maintainers/database
+/lib/glimmer/background_migration/ @glimmer-org/maintainers/database
+/lib/glimmer/database/ @glimmer-org/maintainers/database
+/lib/glimmer/sql/ @glimmer-org/maintainers/database
+/lib/glimmer/github_import/ @glimmer-org/maintainers/database
+/app/finders/ @glimmer-org/maintainers/database
+/rubocop/rubocop-migrations.yml @glimmer-org/maintainers/database
+
+[Engineering Productivity]
+/.gitlab-ci.yml @luna
+/.gitlab/ @luna
+Dangerfile @luna
+/danger/ @luna
+/tooling/danger/ @luna
+/scripts/ @luna
+/scripts/frontend/ @luna @glimmer-org/maintainers/frontend
+.editorconfig @luna
+
+[Backend Static Code Analysis]
+.rubocop*.yml @luna
+/rubocop/ @luna
+/spec/rubocop/ @luna
+
+[End-to-end]
+/qa/ @luna
+
+[LDAP]
+/lib/glimmer/auth/ldap/ @luna
+
+[Templates]
+/lib/glimmer/ci/templates/ @luna
+
+[Threat Insights]
+/app/models/vulnerability.rb @glimmer-org/secure/threat-insights-backend-team
+
+[Container Security]
+/lib/glimmer/kubernetes/cilium_network_policy.rb @glimmer-org/threat-management/defend/container-security/backend
+/spec/lib/glimmer/kubernetes/cilium_network_policy_spec.rb @glimmer-org/threat-management/defend/container-security/backend
+/lib/glimmer/kubernetes/network_policy_common.rb @glimmer-org/threat-management/defend/container-security/backend
+/spec/support/shared_examples/lib/glimmer/kubernetes/network_policy_common_shared_examples.rb @glimmer-org/threat-management/defend/container-security/backend
+/lib/glimmer/kubernetes/network_policy.rb @glimmer-org/threat-management/defend/container-security/backend
+/spec/lib/glimmer/kubernetes/network_policy_spec.rb @glimmer-org/threat-management/defend/container-security/backend
+/app/models/clusters/applications/cilium.rb @glimmer-org/threat-management/defend/container-security/backend
+/spec/models/clusters/applications/cilium_spec.rb @glimmer-org/threat-management/defend/container-security/backend
+
+[Code Owners]
+/doc/user/project/code_owners.md @luna
+
+[Product Intelligence]
+/lib/glimmer/usage_data.rb @glimmer-org/growth/product-intelligence/engineers
+/lib/glimmer/usage_data_counters/ @glimmer-org/growth/product-intelligence/engineers
+
+[Growth Experiments]
+/app/assets/javascripts/lib/utils/experimentation.js @glimmer-org/growth/experiment-devs
+/app/experiments/ @glimmer-org/growth/experiment-devs
+/app/models/experiment.rb @glimmer-org/growth/experiment-devs
+/app/models/experiment_subject.rb @glimmer-org/growth/experiment-devs
+/app/models/experiment_user.rb @glimmer-org/growth/experiment-devs
+/app/workers/experiments/ @glimmer-org/growth/experiment-devs
+/config/feature_flags/experiment/ @glimmer-org/growth/experiment-devs
+/lib/glimmer/experimentation/ @glimmer-org/growth/experiment-devs
+/lib/glimmer/experimentation.rb @glimmer-org/growth/experiment-devs
+/lib/glimmer/experimentation_logger.rb @glimmer-org/growth/experiment-devs
+
+[Legal]
+/config/dependency_decisions.yml @glimmer-org/legal-reviewers
+
+[Workhorse]
+/workhorse/ @luna
